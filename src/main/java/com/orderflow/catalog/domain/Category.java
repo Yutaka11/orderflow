@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "categories")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class Category {
 
     @Id
