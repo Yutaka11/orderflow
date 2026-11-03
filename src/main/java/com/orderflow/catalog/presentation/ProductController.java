@@ -52,6 +52,7 @@ public class ProductController {
     public Page<ProductResponse> search(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) UUID categoryId,
+            @RequestParam(required = false) String categoryName,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(defaultValue = "0") int page,
@@ -62,6 +63,7 @@ public class ProductController {
         return productService.search(
                 name,
                 categoryId,
+                categoryName,
                 minPrice,
                 maxPrice,
                 page,

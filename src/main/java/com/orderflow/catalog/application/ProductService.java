@@ -10,7 +10,6 @@ import com.orderflow.shared.exception.ResourceConflictException;
 import com.orderflow.shared.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.orderflow.catalog.infrastructure.specification.ProductSpecifications;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -99,6 +98,7 @@ public class ProductService {
     public Page<ProductResponse> search(
             String name,
             UUID categoryId,
+            String categoryName,
             BigDecimal minPrice,
             BigDecimal maxPrice,
             int page,
@@ -117,9 +117,11 @@ public class ProductService {
             throw new IllegalArgumentException("Invalid sort field");
         }
 
+
         Specification<Product> specification = Specification
                 .where(ProductSpecifications.hasName(name))
                 .and(ProductSpecifications.hasCategory(categoryId))
+                .and(ProductSpecifications.hasCategoryName(categoryName))
                 .and(ProductSpecifications.hasMinimumPrice(minPrice))
                 .and(ProductSpecifications.hasMaximumPrice(maxPrice));
 

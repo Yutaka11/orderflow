@@ -47,4 +47,12 @@ public class ProductSpecifications {
                         maxPrice
                 );
     }
+
+    public static Specification<Product> hasCategoryName(String categoryName) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("category").get("name")),
+                        "%" + categoryName.toLowerCase() + "%"
+                );
+    }
 }
