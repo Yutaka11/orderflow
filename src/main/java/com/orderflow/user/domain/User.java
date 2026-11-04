@@ -10,7 +10,7 @@ import java.util.UUID;
 @Table(name = "users")
 @Data
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -27,8 +27,9 @@ public class User {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String role;
+    private Role role;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;

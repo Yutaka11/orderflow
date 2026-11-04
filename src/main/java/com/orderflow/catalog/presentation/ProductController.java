@@ -1,27 +1,23 @@
 package com.orderflow.catalog.presentation;
 
 import com.orderflow.catalog.application.ProductService;
-import com.orderflow.catalog.domain.Product;
 import com.orderflow.catalog.presentation.dto.CreateProductRequest;
 import com.orderflow.catalog.presentation.dto.ProductResponse;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 
-import java.math.BigDecimal;
 @RestController
 @RequestMapping("/api/products")
+@SecurityRequirement(name = "bearerAuth")
 public class ProductController {
 
     private final ProductService productService;
@@ -32,6 +28,7 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public ProductResponse create(
             @Valid @RequestBody CreateProductRequest request
     ) {

@@ -6,11 +6,14 @@ import com.orderflow.catalog.presentation.dto.CreateCategoryRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
+@SecurityRequirement(name = "bearerAuth")
+
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -21,6 +24,7 @@ public class CategoryController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public CategoryResponse create(
             @Valid @RequestBody CreateCategoryRequest request
     ) {
