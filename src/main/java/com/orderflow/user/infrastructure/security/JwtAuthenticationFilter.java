@@ -40,51 +40,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         String authorizationHeader = request.getHeader("Authorization");
-
         if (authorizationHeader == null ||
                 !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-
         String token = authorizationHeader.substring(7);
-
         if (!jwtService.isTokenValid(token)) {
+            System.out.println("INVALID JWT");
             filterChain.doFilter(request, response);
             return;
         }
-
         String email = jwtService.extractEmail(token);
-
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
-
             User user = userRepository.findByEmail(email).orElse(null);
-
             if (user != null) {
-
                 var authorities = List.of(
                         new SimpleGrantedAuthority(
                                 "ROLE_" + user.getRole().name()
                         )
                 );
-
                 var authentication =
                         new UsernamePasswordAuthenticationToken(
                                 user.getEmail(),
                                 null,
                                 authorities
                         );
-
                 authentication.setDetails(
                         new WebAuthenticationDetailsSource()
                                 .buildDetails(request)
                 );
-
                 SecurityContextHolder.getContext()
                         .setAuthentication(authentication);
             }
         }
-
         filterChain.doFilter(request, response);
     }
 }
